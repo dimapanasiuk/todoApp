@@ -1,0 +1,21 @@
+node_modules/
+
+FE/npm-debug.log*
+FE/.DS_Store
+# FE/.env
+# FE/.env.local
+
+FE/dist/
+FE/build/
+
+FE/node_modules/
+
+BE/npm-debug.log*
+BE/.DS_Store
+# BE/.env
+# BE/.env.local
+
+BE/dist/
+BE/build/
+
+BE/node_modules/
