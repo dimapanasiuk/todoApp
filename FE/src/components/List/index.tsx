@@ -1,51 +1,140 @@
-import { Box } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { 
+  Box, 
+  Card, 
+  CardContent, 
+  Typography, 
+  IconButton, 
+  Chip,
+  LinearProgress,
+  Alert
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton } from "@mui/material";
-
+import { useTodoStore } from '../../store/todoStore';
 import { DialogWindow } from '../DialogWindow';
 import type { Task } from '../../types'; 
 
 type ListType = {
   data: Task[];
-  deleteData: (id: string) => void
+  deleteData: (id: string) => Promise<boolean>;
 } 
 
-export const List = ({data, deleteData}: ListType) => {
-  const onDelete = (id: string) => {
-    deleteData(id)
-  }
+export const List = ({ data, deleteData }: ListType) => {
+  const { isDeleting, error, clearError } = useTodoStore();
+
+  const onDelete = async (id: string) => {
+    await deleteData(id);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'todo': return 'default';
+      case 'in progress': return 'warning';
+      case 'done': return 'success';
+      default: return 'default';
+    }
+  };
+
+  const getPriorityColor = (priority: number) => {
+    if (priority >= 4) return 'error';
+    if (priority >= 3) return 'warning';
+    return 'success';
+  };
+
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp).toLocaleDateString('ru-RU');
+  };
 
   return (
-    <ul>
-      {data.map(item => 
-        <DialogWindow key={item?.id} data={item}>
-          <Box sx={{ minWidth: 275 }}>
-            <Card variant="outlined">
-              <CardContent  sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Box>
-                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                  {item.title}
-                </Typography>
-                <Typography variant="body2">
-                  {item.description}
-                </Typography>
+    <Box sx={{ p: 2, maxWidth: 800, mx: 'auto' }}>
+      {isDeleting && (
+        <LinearProgress sx={{ mb: 2 }} />
+      )}
+      
+      {error && (
+        <Alert severity="error" onClose={clearError} sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {data.map(item => 
+          <DialogWindow key={item?.id} data={item}>
+            <Card 
+              variant="outlined" 
+              sx={{ 
+                cursor: 'pointer',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  boxShadow: 2,
+                  transform: 'translateY(-2px)'
+                }
+              }}
+            >
+              <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Box sx={{ flex: 1, mr: 2 }}>
+                  <Typography 
+                    variant="h6" 
+                    gutterBottom 
+                    sx={{ 
+                      color: 'text.primary',
+                      fontWeight: 'medium'
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  
+                  {item.description && (
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ mb: 1 }}
+                    >
+                      {item.description}
+                    </Typography>
+                  )}
+                  
+                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1 }}>
+                    <Chip 
+                      label={item.status} 
+                      size="small" 
+                      color={getStatusColor(item.status) as any}
+                    />
+                    <Chip 
+                      label={`Приоритет: ${item.priority}`} 
+                      size="small" 
+                      color={getPriorityColor(item.priority) as any}
+                    />
+                    {item.deadlineDate && (
+                      <Chip 
+                        label={`До: ${formatDate(item.deadlineDate)}`} 
+                        size="small" 
+                        variant="outlined"
+                      />
+                    )}
+                  </Box>
                 </Box>
-                <IconButton onClick={(e) => {
+                
+                <IconButton 
+                  onClick={(e) => {
                     e.stopPropagation();
-                    onDelete(item.id)
+                    onDelete(item.id);
                   }}
-                 sx={{ "&:hover": { opacity: "0.5" } }}>
+                  disabled={isDeleting}
+                  sx={{ 
+                    "&:hover": { 
+                      backgroundColor: 'error.light',
+                      color: 'white'
+                    },
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
               </CardContent>
             </Card>
-          </Box>
-        </DialogWindow>
-      )} 
-    </ul>
-  )
-
-}
+          </DialogWindow>
+        )} 
+      </Box>
+    </Box>
+  );
+};

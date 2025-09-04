@@ -6,27 +6,40 @@ import {
   Box,
   Typography,
   Card,
-  CardContent
+  CardContent,
+  Alert,
+  Link
 } from '@mui/material';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import Loader from '../../components/Loader';
 
-function App() {
+function Registration() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [error, setError] = React.useState('');
+  const navigate = useNavigate();
+  
+  const { 
+    isRegistering, 
+    error, 
+    success, 
+    register, 
+    clearError, 
+    clearSuccess 
+  } = useAuthStore();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const loading = isRegistering;
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (password !== confirmPassword) {
-      setError('Пароли не совпадают!');
-      return;
+    clearError();
+    clearSuccess();
+    
+    const success = await register(email, password, confirmPassword);
+    if (success) {
+      navigate('/board');
     }
-
-    setError('');
-    // Здесь вы можете добавить логику для отправки данных на сервер
-    console.log('Регистрация:', { email, password });
-    alert('Попытка регистрации...');
   };
 
   return (
@@ -43,7 +56,20 @@ function App() {
             <Typography component="h1" variant="h5">
               Регистрация
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
+            {error && (
+              <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+                {error}
+              </Alert>
+            )}
+            
+            {success && (
+              <Alert severity="success" sx={{ width: '100%', mt: 2 }}>
+                {success}
+              </Alert>
+            )}
+            
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
               <TextField
                 margin="normal"
                 required
@@ -55,6 +81,7 @@ function App() {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
               <TextField
                 margin="normal"
@@ -67,6 +94,7 @@ function App() {
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
               />
               <TextField
                 margin="normal"
@@ -79,23 +107,37 @@ function App() {
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                error={!!error}
-                helperText={error}
+                disabled={loading}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Зарегистрироваться
+                {loading ? 'Регистрация...' : 'Зарегистрироваться'}
               </Button>
+              
+              <Box sx={{ textAlign: 'center' }}>
+                <Link component={RouterLink} to="/login" variant="body2">
+                  Уже есть аккаунт? Войти
+                </Link>
+              </Box>
             </Box>
           </Box>
         </CardContent>
       </Card>
+      
+      {loading && (
+        <Loader 
+          type="backdrop" 
+          loading={true} 
+          message="Выполняется регистрация..." 
+        />
+      )}
     </Container>
   );
 }
 
-export default App;
+export default Registration;

@@ -21,9 +21,8 @@ class ApiService {
     return response.data;
   }
 
-  public async logout(token: string): Promise<AuthResponse> {
-    const response: AxiosResponse<AuthResponse> = await axiosInstance.post('/auth/logout', { token });
-    return response.data;
+  public async logout(): Promise<void> {
+    await axiosInstance.post('/auth/logout');
   }
 
   public async getTodos(): Promise<Task[]> {
@@ -32,16 +31,16 @@ class ApiService {
   }
 
   public async deleteTodo(id: string) {
-    const response = await axiosInstance.delete(`${this.baseUrl}/todo/${id}`);
+    const response = await axiosInstance.delete(`/todo/${id}`);
     return response.data;
   }
 
-  public async updateTodo (id: string, body: Task) {
-    const response: AxiosResponse<Task> = await axiosInstance.put(`${this.baseUrl}/todo/${id}`, body);
+  public async updateTodo (id: string, body: Partial<Task>) {
+    const response: AxiosResponse<Task> = await axiosInstance.put(`/todo/${id}`, body);
     return response.data;
   }
 
-  public async createTodo (body: Task) {
+  public async createTodo (body: Omit<Task, 'id' | 'userId'>) {
     const response: AxiosResponse<Task> = await axiosInstance.post("/todo", body);
     return response.data;
   }

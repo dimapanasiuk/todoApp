@@ -1,23 +1,62 @@
 import { List } from '../../components/List';
-import { Notion } from '../../components//Notion'
-import { useGetTodos, useDeleteTodo } from "../../hooks"
+import { Notion } from '../../components/Notion';
+import { useTodoStore } from '../../store/todoStore';
 import { Header } from '../../components/Header';
+import Loader from '../../components/Loader';
+import { Box, Alert } from '@mui/material';
+import { useEffect } from 'react';
 
 const Board = () => {
-	const [todos, isLoading, error] = useGetTodos();
-	const { deleteData } = useDeleteTodo();
+	const { 
+		todos, 
+		isFetching, 
+		error, 
+		deleteTodo,
+		fetchTodos
+	} = useTodoStore();
 
-	if (isLoading ) return 'Loading'
-	if(todos === null) return 'content is empty'
-	if(error) return error
+	// Загружаем задачи при монтировании компонента
+	useEffect(() => {
+		fetchTodos();
+	}, [fetchTodos]);
+
+	if (isFetching) {
+		return (
+			<Loader 
+				type="backdrop" 
+				loading={true} 
+				message="Загружаем ваши задачи..." 
+			/>
+		);
+	}
+
+	if (error) {
+		return (
+			<Box sx={{ p: 2 }}>
+				<Alert severity="error">{error}</Alert>
+			</Box>
+		);
+	}
+
+	if (todos.length === 0) {
+		return (
+			<>
+				<Header/>
+				<Box sx={{ p: 2, textAlign: 'center' }}>
+					<Alert severity="info">У вас пока нет задач. Создайте первую!</Alert>
+				</Box>
+				<Notion/>
+			</>
+		);
+	}
 
 	return (
 		<>
-		  <Header/>
+			<Header/>
 			<Notion/>
-			<List data={todos} deleteData={deleteData}/>
+			<List data={todos} deleteData={deleteTodo}/>
 		</>
-	)
-}
+	);
+};
 
 export default Board;

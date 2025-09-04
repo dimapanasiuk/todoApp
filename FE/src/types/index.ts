@@ -19,7 +19,7 @@ export interface Task {
  
 export interface AuthResponse {
   accessToken: string;
-  refreshToken: string;
+  message?: string;
 }
   
 export interface RegisterData {

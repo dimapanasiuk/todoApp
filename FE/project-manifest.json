@@ -1,0 +1,90 @@
+{
+  "name": "Todo App Frontend",
+  "version": "0.0.0",
+  "description": "Frontend приложение для управления задачами (Todo App)",
+  "type": "frontend",
+  "technology": "React + TypeScript + Vite",
+  "ui_framework": "Material-UI (MUI)",
+  "routing": "React Router DOM",
+  "state_management": "React Hooks",
+  "http_client": "Axios",
+  "architecture": {
+    "pattern": "Component-based SPA",
+    "structure": "Feature-based organization",
+    "routing": "Client-side routing"
+  },
+  "dependencies": {
+    "core": [
+      "react",
+      "react-dom",
+      "typescript"
+    ],
+    "build_tool": [
+      "vite",
+      "@vitejs/plugin-react"
+    ],
+    "ui": [
+      "@mui/material",
+      "@mui/icons-material",
+      "@emotion/react",
+      "@emotion/styled"
+    ],
+    "routing": [
+      "react-router-dom"
+    ],
+    "http": [
+      "axios"
+    ],
+    "development": [
+      "eslint",
+      "typescript-eslint"
+    ]
+  },
+  "structure": {
+    "src/": "Исходный код приложения",
+    "src/App.tsx": "Главный компонент приложения",
+    "src/main.tsx": "Точка входа приложения",
+    "src/pages/": "Страницы приложения",
+    "src/components/": "Переиспользуемые компоненты",
+    "src/hooks/": "Пользовательские React хуки",
+    "src/api/": "API клиент и конфигурация",
+    "src/router/": "Конфигурация маршрутизации",
+    "src/types/": "TypeScript типы"
+  },
+  "pages": {
+    "Login": "Страница входа в систему",
+    "Registration": "Страница регистрации",
+    "Board": "Главная страница с задачами"
+  },
+  "components": {
+    "Header": "Шапка приложения",
+    "List": "Список задач",
+    "Notion": "Компонент для создания задач",
+    "DialogWindow": "Модальные окна",
+    "EditableText": "Редактируемый текст"
+  },
+  "hooks": {
+    "useAuth": "Управление аутентификацией",
+    "useGetTodos": "Получение списка задач",
+    "useCreateTodo": "Создание новой задачи",
+    "useUpdateTodo": "Обновление задачи",
+    "useDeleteTodo": "Удаление задачи"
+  },
+  "features": {
+    "authentication": "Вход/регистрация пользователей",
+    "task_management": "CRUD операции с задачами",
+    "responsive_design": "Адаптивный дизайн",
+    "real_time_updates": "Обновление данных в реальном времени"
+  },
+  "api_integration": {
+    "base_url": "http://localhost:5000",
+    "authentication": "JWT токены в localStorage",
+    "interceptors": "Автоматическое добавление токенов к запросам"
+  },
+  "scripts": {
+    "dev": "Запуск development сервера",
+    "build": "Сборка для production",
+    "preview": "Предварительный просмотр сборки",
+    "lint": "Проверка кода линтером"
+  }
+}

@@ -7,31 +7,39 @@ import {
   Typography,
   Card,
   CardContent,
-  CircularProgress 
+  Alert,
+  Link
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth'; 
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore'; 
+import Loader from '../../components/Loader';
 
 function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-const navigate =useNavigate();
+  const navigate = useNavigate();
   
-  const { loading, error, success, handleLogin } = useAuth();
+  const { 
+    isLoggingIn, 
+    error, 
+    success, 
+    login, 
+    clearError, 
+    clearSuccess 
+  } = useAuthStore();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const loading = isLoggingIn;
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    handleLogin(email, password);
+    clearError();
+    clearSuccess();
+    
+    const success = await login(email, password);
+    if (success) {
+      navigate('/board');
+    }
   };
-  
-  if(success) {
-    return navigate('/board')
-  }
-
-  if(error) {
-    return error
-  }
-
 
   return (
     <Container component="main" maxWidth="xs" sx={{ mt: 8 }}>
@@ -47,7 +55,20 @@ const navigate =useNavigate();
             <Typography component="h1" variant="h5">
               Вход
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
+            {error && (
+              <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+                {error}
+              </Alert>
+            )}
+            
+            {success && (
+              <Alert severity="success" sx={{ width: '100%', mt: 2 }}>
+                {success}
+              </Alert>
+            )}
+            
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
               <TextField
                 margin="normal"
                 required
@@ -59,6 +80,7 @@ const navigate =useNavigate();
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
               <TextField
                 margin="normal"
@@ -71,20 +93,35 @@ const navigate =useNavigate();
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Войти
-                {loading && (<CircularProgress size={24} color="inherit" />)}
+                {loading ? 'Вход...' : 'Войти'}
               </Button>
+              
+              <Box sx={{ textAlign: 'center' }}>
+                <Link component={RouterLink} to="/registration" variant="body2">
+                  Нет аккаунта? Зарегистрироваться
+                </Link>
+              </Box>
             </Box>
           </Box>
         </CardContent>
       </Card>
+      
+      {loading && (
+        <Loader 
+          type="backdrop" 
+          loading={true} 
+          message="Выполняется вход..." 
+        />
+      )}
     </Container>
   );
 }

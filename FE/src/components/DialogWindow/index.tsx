@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { EditableText } from '../EditableText';
 import type { Task } from '../../types';
-import { useUpdateTodo } from '../../hooks'
+import { useTodoStore } from '../../store/todoStore'
 
 type DialogWindowType = {
   children: ReactNode,
@@ -17,7 +17,7 @@ export const DialogWindow = ({data, children}: DialogWindowType) => {
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({});
-  const { updateTodo } =  useUpdateTodo()
+  const { updateTodo } = useTodoStore()
 
   useEffect(() => {
     if(Object.keys(formData).length) {
