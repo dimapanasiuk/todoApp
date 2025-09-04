@@ -11,8 +11,8 @@ import {
   Link
 } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
-import Loader from '../../components/Loader';
+import { useAuthStore } from '@/store/authStore';
+import Loader from '@/components/Loader';
 
 function Registration() {
   const [email, setEmail] = React.useState('');

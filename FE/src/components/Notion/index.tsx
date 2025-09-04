@@ -6,8 +6,8 @@ import {
   Alert,
   CircularProgress 
 } from "@mui/material";
-import { useTodoStore } from "../../store/todoStore";
-import { priorityTaskEnum } from '../../types';
+import { useTodoStore } from "@/store/todoStore";
+import { priorityTaskEnum } from '@/types';
 
 export const Notion = () => {
   const [inputValue, setInputValue] = useState("");

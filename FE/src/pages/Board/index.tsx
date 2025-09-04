@@ -1,8 +1,8 @@
-import { List } from '../../components/List';
-import { Notion } from '../../components/Notion';
-import { useTodoStore } from '../../store/todoStore';
-import { Header } from '../../components/Header';
-import Loader from '../../components/Loader';
+import { List } from '@/components/List';
+import { Notion } from '@/components/Notion';
+import { useTodoStore } from '@/store/todoStore';
+import { Header } from '@/components/Header';
+import Loader from '@/components/Loader';
 import { Box, Alert } from '@mui/material';
 import { useEffect } from 'react';
 

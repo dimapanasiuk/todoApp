@@ -9,9 +9,9 @@ import {
   Alert
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useTodoStore } from '../../store/todoStore';
-import { DialogWindow } from '../DialogWindow';
-import type { Task } from '../../types'; 
+import { useTodoStore } from '@/store/todoStore';
+import { DialogWindow } from '@/components/DialogWindow';
+import type { Task } from '@/types'; 
 
 type ListType = {
   data: Task[];

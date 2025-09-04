@@ -4,9 +4,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { EditableText } from '../EditableText';
-import type { Task } from '../../types';
-import { useTodoStore } from '../../store/todoStore'
+import { EditableText } from '@/components/EditableText';
+import type { Task } from '@/types';
+import { useTodoStore } from '@/store/todoStore'
 
 type DialogWindowType = {
   children: ReactNode,

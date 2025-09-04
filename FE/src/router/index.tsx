@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
-import Loader from '../components/Loader';
+import { useAuthStore } from '@/store/authStore';
+import Loader from '@/components/Loader';
 
-const LazyLogin = React.lazy(() => import('../pages/Login'));
-const LazyRegistration = React.lazy(() => import('../pages/Registration'));
-const LazyBoard = React.lazy(() => import('../pages/Board'));
+const LazyLogin = React.lazy(() => import('@/pages/Login'));
+const LazyRegistration = React.lazy(() => import('@/pages/Registration'));
+const LazyBoard = React.lazy(() => import('@/pages/Board'));
 
 // Компонент для защищенных маршрутов
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {

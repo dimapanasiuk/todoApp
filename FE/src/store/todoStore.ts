@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { Task } from '../types';
-import api from '../api/api';
+import type { Task } from '@/types';
+import api from '@/api/api';
 
 interface TodoState {
   // Состояние данных

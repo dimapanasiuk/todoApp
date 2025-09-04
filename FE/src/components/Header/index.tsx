@@ -6,7 +6,7 @@ import {
   Box,
   CircularProgress
 } from '@mui/material';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '@/store/authStore';
 
 export function Header() {
   const { logout, isLoggingOut, user } = useAuthStore();
