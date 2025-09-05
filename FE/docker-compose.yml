@@ -1,0 +1,42 @@
+# docker-compose.yml только для Frontend
+# 
+# ИНСТРУКЦИИ ПО ЗАПУСКУ:
+#
+# 1. ЗАПУСК FRONTEND (предполагая, что backend уже запущен на localhost:5000):
+#    docker-compose up --build
+#
+# 2. ЗАПУСК В ФОНОВОМ РЕЖИМЕ:
+#    docker-compose up -d --build
+#
+# 3. ОСТАНОВКА:
+#    docker-compose down
+#
+# 4. ПРОСМОТР ЛОГОВ:
+#    docker-compose logs -f frontend
+#
+# ПОРТЫ:
+# - Frontend: http://localhost:3001
+# - Backend должен быть доступен на: http://localhost:5000
+#
+# ВАЖНО: 
+# - Убедитесь, что backend запущен на порту 5000
+# - Frontend будет обращаться к backend по адресу http://localhost:5000
+# - Если backend запущен в Docker, используйте имя сервиса вместо localhost
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

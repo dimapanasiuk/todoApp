@@ -57,7 +57,7 @@ export const List = ({ data, deleteData }: ListType) => {
       )}
       
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {data.map(item => 
+        {Array.isArray(data) && data.map(item => 
           <DialogWindow key={item?.id} data={item}>
             <Card 
               variant="outlined" 

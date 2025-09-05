@@ -1,5 +1,7 @@
 import axios, { type AxiosError, type AxiosRequestHeaders } from 'axios';
-const apiUrl = import.meta.env.VITE_API_URL
+
+// URL для backend API
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const axiosInstance = axios.create({
   baseURL: apiUrl,
@@ -34,7 +36,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         
-        const response = await axiosInstance.post(`${apiUrl}/auth/token`);
+        const response = await axiosInstance.post('/auth/token');
         const newAccessToken = response.data.accessToken;
 
         localStorage.setItem('accessToken', newAccessToken);

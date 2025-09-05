@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 const express = require('express');
 const pool = require('../db');
+
 const getQuery = require('../utils');
 
 const router = express.Router();
@@ -79,7 +80,7 @@ router.put("/:id", async (req: Request, res: Response) => {
     const { userId } = req.user;
     const { title, description, deadlineDate, status, priority, color } = req.body;
 
-    const query = getQuery('../../db/tasks/update_task.sql');    
+    const query = getQuery('../db/tasks/update_task.sql');    
     const result = await pool.query(query, [title, description, deadlineDate, status, priority, color, id, userId]);	
 
     if (result.rows.length === 0) {
@@ -103,10 +104,8 @@ router.delete("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { userId } = req.user;
-   
-    console.log({id, userId})
     
-    const query = getQuery('../../db/tasks/delete_task.sql');    
+    const query = getQuery('../db/tasks/delete_task.sql');    
     const result = await pool.query(query, [id, userId]);	
 
 

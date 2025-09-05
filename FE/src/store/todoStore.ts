@@ -41,7 +41,7 @@ export const useTodoStore = create<TodoState>((set) => ({
     
     try {
       const todos = await api.getTodos();
-      set({ todos, isFetching: false });
+      set({ todos: Array.isArray(todos) ? todos : [], isFetching: false });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Ошибка при загрузке задач';
       set({ error: errorMessage, isFetching: false });

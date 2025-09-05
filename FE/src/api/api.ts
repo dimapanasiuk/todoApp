@@ -2,13 +2,9 @@ import { type AxiosResponse } from 'axios';
 import axiosInstance from './axiosInstance';
 import type { Task, AuthResponse, RegisterData } from '../types';
 
-const apiUrl = import.meta.env.VITE_API_URL
-
 class ApiService {
-  private readonly baseUrl: string;
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor() {
+    // Конструктор для будущих расширений
   }
 
   public async login(email: string, password: string): Promise<AuthResponse> {
@@ -46,7 +42,7 @@ class ApiService {
   }
 }
 
-const apiService = new ApiService(apiUrl);
+const apiService = new ApiService();
 
 export default apiService;
 

@@ -1,0 +1,87 @@
+{
+  "name": "Todo App",
+  "version": "1.0.0",
+  "description": "Полнофункциональное приложение для управления задачами с аутентификацией",
+  "type": "fullstack",
+  "architecture": "Client-Server",
+  "technologies": {
+    "frontend": "React + TypeScript + Vite + Material-UI",
+    "backend": "Node.js + Express + TypeScript",
+    "database": "PostgreSQL",
+    "authentication": "JWT"
+  },
+  "project_structure": {
+    "FE/": "Frontend приложение (React)",
+    "BE/": "Backend API (Node.js/Express)",
+    "docs/": "Документация проекта"
+  },
+  "features": {
+    "user_authentication": {
+      "registration": "Регистрация новых пользователей",
+      "login": "Вход в систему",
+      "jwt_tokens": "Access и Refresh токены",
+      "logout": "Безопасный выход"
+    },
+    "task_management": {
+      "create": "Создание новых задач",
+      "read": "Просмотр списка задач",
+      "update": "Редактирование задач",
+      "delete": "Удаление задач",
+      "status_tracking": "Отслеживание статуса задач",
+      "priority_system": "Система приоритетов",
+      "deadlines": "Установка сроков выполнения",
+      "color_coding": "Цветовое кодирование задач"
+    },
+    "ui_ux": {
+      "responsive_design": "Адаптивный дизайн",
+      "material_design": "Material Design компоненты",
+      "real_time_updates": "Обновления в реальном времени",
+      "intuitive_interface": "Интуитивно понятный интерфейс"
+    }
+  },
+  "development": {
+    "frontend_port": 3001,
+    "backend_port": 5000,
+    "database": "PostgreSQL",
+    "environment": "Development/Production"
+  },
+  "security": {
+    "password_hashing": "bcrypt",
+    "jwt_authentication": "JSON Web Tokens",
+    "cors_protection": "Cross-Origin Resource Sharing",
+    "http_only_cookies": "Безопасные cookies для refresh токенов"
+  },
+  "api_documentation": {
+    "authentication_endpoints": "/auth/*",
+    "task_endpoints": "/todo/*",
+    "base_url": "http://localhost:5000"
+  },
+  "deployment": {
+    "frontend": "Статическая сборка для веб-сервера",
+    "backend": "Node.js сервер",
+    "database": "PostgreSQL сервер"
+  },
+  "getting_started": {
+    "prerequisites": [
+      "Node.js (v16+)",
+      "PostgreSQL",
+      "npm или yarn"
+    ],
+    "installation": [
+      "1. Клонировать репозиторий",
+      "2. Установить зависимости: npm install (в BE/ и FE/)",
+      "3. Настроить переменные окружения",
+      "4. Запустить базу данных PostgreSQL",
+      "5. Запустить backend: npm run dev (в BE/)",
+      "6. Запустить frontend: npm run dev (в FE/)"
+    ]
+  },
+  "contributing": {
+    "code_style": "TypeScript + ESLint",
+    "commit_convention": "Conventional Commits",
+    "testing": "Unit и Integration тесты"
+  },
+  "license": "MIT",
+  "authors": ["panakota"],
+  "repository": "petprojects/todoApp"
+}

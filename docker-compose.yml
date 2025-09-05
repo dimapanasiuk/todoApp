@@ -1,0 +1,79 @@
+# docker-compose.yml для Todo App
+# 
+# ИНСТРУКЦИИ ПО ЗАПУСКУ:
+#
+# 1. ЗАПУСК ВСЕХ СЕРВИСОВ:
+#    docker-compose up --build
+#
+# 2. ЗАПУСК В ФОНОВОМ РЕЖИМЕ:
+#    docker-compose up -d --build
+#
+# 3. ОСТАНОВКА СЕРВИСОВ:
+#    docker-compose down
+#
+# 4. ПРОСМОТР ЛОГОВ:
+#    docker-compose logs -f
+#
+# 5. ПЕРЕСБОРКА ОБРАЗОВ:
+#    docker-compose build --no-cache
+#
+# ПОРТЫ:
+# - Frontend: http://localhost:3001
+# - Backend: http://localhost:5000
+#
+# ВАЖНО: Убедитесь, что порты 3001 и 5000 свободны!
+
+version: '3.8'
+
+services:
+  # Backend сервис
+  backend:
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    volumes:
+      # Монтируем базу данных для сохранения данных
+      - ./BE/database.json:/app/database.json
+    networks:
+      - todo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend сервис
+  frontend:
+    build:
+      context: ./FE
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - todo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Сеть для связи между сервисами
+networks:
+  todo-network:
+    driver: bridge
+
+# Тома для хранения данных
+volumes:
+  database-data:
+    driver: local

@@ -27,6 +27,7 @@ export const Notion = () => {
       title: inputValue.trim(),
       description: description.trim(),
       createdAt: Date.now(),
+      updatedAt: new Date().toISOString(),
       deadlineDate: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 дней от текущего времени
       status: priorityTaskEnum.TODO,
       priority: 3,

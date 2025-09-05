@@ -1,0 +1,34 @@
+# Dockerfile для Development режима
+# 
+# ИНСТРУКЦИИ ПО ЗАПУСКУ:
+# 
+# 1. СБОРКА ОБРАЗА:
+#    docker build -f Dockerfile.dev -t todo-frontend-dev .
+#
+# 2. ЗАПУСК КОНТЕЙНЕРА:
+#    docker run -p 3001:3001 -v $(pwd):/app -v /app/node_modules --name todo-frontend-dev todo-frontend-dev
+#
+# 3. ОСТАНОВКА И УДАЛЕНИЕ:
+#    docker stop todo-frontend-dev && docker rm todo-frontend-dev
+#
+# ВАЖНО: Этот Dockerfile предназначен для разработки с hot reload!
+
+FROM node:18-alpine
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем package.json и package-lock.json
+COPY package*.json ./
+
+# Устанавливаем все зависимости
+RUN npm ci
+
+# Копируем исходный код
+COPY . .
+
+# Открываем порт 3001
+EXPOSE 3001
+
+# Запускаем в режиме разработки с hot reload
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

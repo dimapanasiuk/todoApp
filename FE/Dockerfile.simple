@@ -1,0 +1,33 @@
+# КАК ЗАПУСТИТЬ:
+# 1. docker build -t my-frontend .
+# 2. docker run -p 3001:3001 my-frontend
+
+FROM node:18-alpine
+
+# Создаем папку для приложения
+WORKDIR /app
+
+# Копируем файлы с зависимостями
+COPY package*.json ./
+
+# Устанавливаем ВСЕ зависимости (включая devDependencies для сборки)
+RUN npm install
+
+# Копируем весь код
+COPY . .
+
+# Собираем приложение
+RUN npm run build
+
+# Устанавливаем serve для запуска
+RUN npm install -g serve
+
+# Переменные окружения (после сборки)
+ENV VITE_API_URL=http://localhost:5000
+ENV NODE_ENV=production
+
+# Открываем порт 3001
+EXPOSE 3001
+
+# Запускаем приложение
+CMD ["serve", "-s", "dist", "-l", "3001"]
