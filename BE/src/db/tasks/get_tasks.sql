@@ -1,1 +1,1 @@
-SELECT * FROM tasks WHERE userid = $1
+SELECT * FROM tasks WHERE user_id = $1

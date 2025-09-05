@@ -8,7 +8,7 @@ export interface UserAuthDataType {
   id: string;
   userId: string;
   token: string
-  createdAt: Date
+  created_at: Date
 }
 
 // Расширяем стандартный тип Request
@@ -27,11 +27,11 @@ export interface TodoType {
   id: string;
   title: string;
   description: string;
-  createdAt: number;
-  updatedAt: number;
-  deadlineDate: number;
+  created_at: number;
+  updated_at: number;
+  deadline_date: number;
   status: TodoStatus;
   priority: TodoPriority;
   color: string;
-  userId: string;
+  user_id: string;
 }

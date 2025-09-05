@@ -1,1 +1,1 @@
-DELETE FROM tasks WHERE id = $1 AND userid = $2 RETURNING *
+DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *

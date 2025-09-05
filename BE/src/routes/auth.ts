@@ -40,7 +40,7 @@ router.post("/login", async (req: Request, res: Response) => {
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return res.status(400).json({ error: "Incorrect login or password" });
 
-  const accessToken = jwt.sign({ userId: user.id }, process.env.ACCESS_SECRET, { expiresIn: "1m" });
+  const accessToken = jwt.sign({ userId: user.id }, process.env.ACCESS_SECRET, { expiresIn: "15m" });
   const refreshToken = jwt.sign({ userId: user.id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
   const refreshTokensQuery = getQuery('../db/login/create_refresh_token.sql');

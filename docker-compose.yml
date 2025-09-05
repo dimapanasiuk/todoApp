@@ -20,12 +20,37 @@
 # ПОРТЫ:
 # - Frontend: http://localhost:3001
 # - Backend: http://localhost:5000
+# - Database: localhost:5432
 #
-# ВАЖНО: Убедитесь, что порты 3001 и 5000 свободны!
+# ВАЖНО: Убедитесь, что порты 3001, 5000 и 5432 свободны!
 
 version: '3.8'
 
 services:
+  # PostgreSQL база данных
+  database:
+    build:
+      context: ./BE
+      dockerfile: Dockerfile.db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME:-todo}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-0000}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./BE/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - todo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Backend сервис
   backend:
     build:
@@ -33,12 +58,21 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    env_file:
+      - ./BE/.env
     environment:
-      - NODE_ENV=production
-      - PORT=5000
-    volumes:
-      # Монтируем базу данных для сохранения данных
-      - ./BE/database.json:/app/database.json
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-5000}
+      - DB_HOST=${DB_HOST:-database}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-todo}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-0000}
+      - ACCESS_SECRET=${ACCESS_SECRET}
+      - REFRESH_SECRET=${REFRESH_SECRET}
+    depends_on:
+      database:
+        condition: service_healthy
     networks:
       - todo-network
     restart: unless-stopped
@@ -75,5 +109,5 @@ networks:
 
 # Тома для хранения данных
 volumes:
-  database-data:
+  postgres_data:
     driver: local

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { randomUUID } from 'crypto';
 
 const express = require('express');
 const pool = require('../db');
@@ -32,12 +33,12 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { title, description, createdAt, deadlineDate, status, priority, color } = req.body;
+    const { title, description, created_at, deadline_date, status, priority, color } = req.body;
     const { userId } = req.user;
-    const id = crypto.randomUUID();
+    const id = randomUUID();
 
     const query = getQuery('../db/tasks/insert_task.sql');
-    const result = await pool.query(query, [id, title, description, createdAt, deadlineDate, status, priority, color, userId]);
+    const result = await pool.query(query, [id, title, description, created_at, deadline_date, status, priority, color, userId]);
 
     return res.status(201).json(result.rows[0]); 
   } catch (err: unknown) {
@@ -78,10 +79,10 @@ router.put("/:id", async (req: Request, res: Response) => {
   try{
     const { id } = req.params;
     const { userId } = req.user;
-    const { title, description, deadlineDate, status, priority, color } = req.body;
+    const { title, description, deadline_date, status, priority, color } = req.body;
 
     const query = getQuery('../db/tasks/update_task.sql');    
-    const result = await pool.query(query, [title, description, deadlineDate, status, priority, color, id, userId]);	
+    const result = await pool.query(query, [title, description, deadline_date, status, priority, color, id, userId]);	
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Task not found' });
